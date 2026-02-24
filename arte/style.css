@@ -1,0 +1,23 @@
+body {
+    font-family: Arial;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
+
+form {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 5px;
+}
