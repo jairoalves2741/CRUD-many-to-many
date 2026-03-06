@@ -1,23 +1,74 @@
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     padding: 20px;
     line-height: 1.6;
+    background-color: #fafafa;
 }
 
+/* Estilo do Formulário de Cadastro */
+form {
+    background: #000000;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    max-width: 500px;
+    /* Limita a largura para não ficar gigante */
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilo da Tabela de Listagem */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 30px;
+    background: white;
 }
 
 th,
 td {
-    padding: 10px;
+    padding: 12px;
     text-align: left;
+    border-bottom: 1px solid #ddd;
+    /* Linha horizontal entre os alunos */
 }
 
-form {
-    background: #f4f4f4;
-    padding: 15px;
-    border-radius: 5px;
+th {
+    background-color: #333;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    /* Efeito ao passar o mouse na linha */
+}
+
+/* Estilo dos links de ação */
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0056b3;
 }

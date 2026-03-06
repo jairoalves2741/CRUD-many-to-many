@@ -1,13 +1,11 @@
 <?php
-// Dados do banco
-$host = "localhost";
-$banco = "escola";
-$usuario = "root";
-$senha = "";
+$host = "localhost"; //servidor web
+$user = "root"; //nome  de usuario
+$pass = ""; //password vazia 
+$db = "escola"; //Nome do Banco
 
-try {
-    // Cria a conexão PDO
-    $pdo = new PDO("mysql:host=$host;dbname=$banco;charset=utf8", $usuario, $senha);
-} catch (Exception $e) {
-    echo "Erro ao conectar: " . $e->getMessage();
-}           
+//Conexão ao codigo  --  
+//$conn serve como uma ponte
+//então estamos transformando a variavel $conn em uma chave de conexão   
+$conn = mysqli_connect($host, $user, $pass, $db);
+?>

@@ -1,52 +1,39 @@
 <?php
-require 'config/database.php';
+include 'config/database.php';
 
+// Pega o ID da URL. Ex: editar.php?id=2
 $id = $_GET['id'];
 
-// 1. Pega os dados do aluno
-$sql_aluno = $pdo->prepare("SELECT * FROM alunos WHERE id = ?");
-$sql_aluno->execute([$id]);
-$aluno = $sql_aluno->fetch(PDO::FETCH_ASSOC);
+// Busca o aluno
+$sql_aluno = "SELECT * FROM alunos WHERE id = $id";
+$query_aluno = mysqli_query($conn, $sql_aluno);
+$aluno = mysqli_fetch_assoc($query_aluno);
 
-// 2. Pega todos os cursos disponíveis
-$cursos = $pdo->query("SELECT * FROM cursos")->fetchAll(PDO::FETCH_ASSOC);
+// Busca quais cursos esse aluno já tem
+$meus_cursos = [];
+$sql_relacao = "SELECT curso_id FROM aluno_curso WHERE aluno_id = $id";
+$query_relacao = mysqli_query($conn, $sql_relacao);
 
-// 3. Pega quais cursos ESSE aluno já tem (para marcar o checkbox)
-$sql_check = $pdo->prepare("SELECT curso_id FROM aluno_curso WHERE aluno_id = ?");
-$sql_check->execute([$id]);
-$cursos_do_aluno = $sql_check->fetchAll(PDO::FETCH_COLUMN); // Cria um array só com os IDs
+while ($linha = mysqli_fetch_assoc($query_relacao)) {
+    $meus_cursos[] = $linha['curso_id'];
+}
 ?>
 
 <h2>Editar Aluno</h2>
-<form action="editar.php?id=<?= $id ?>" method="POST">
-    <input type="text" name="nome" value="<?= $aluno['nome'] ?>">
+<form action="actions/create.php?id=<?php echo $id; ?>" method="POST">
+    Nome: <input type="text" name="nome_aluno" value="<?php echo $aluno['nome']; ?>">
     <br><br>
 
-    <?php foreach ($cursos as $c): ?>
-        <input type="checkbox" name="cursos[]" value="<?= $c['id'] ?>" <?= in_array($c['id'], $cursos_do_aluno) ? 'checked' : '' ?>>
-        <?= $c['nome'] ?> <br>
+    <strong>Cursos:</strong><br>
+    <?php
+    $query_todos = mysqli_query($conn, "SELECT * FROM cursos");
+    while ($curso = mysqli_fetch_assoc($query_todos)) {
+        // Verifica se o ID do curso está na lista do aluno
+        $checado = in_array($curso['id'], $meus_cursos) ? "checked" : "";
 
-    <?php endforeach; ?>
-
-    <br>
-    <button type="submit">Atualizar</button>
-</form>
-
-<?php
-// Lógica de Salvar a Edição
-if ($_POST) {
-    // Atualiza nome
-    $up = $pdo->prepare("UPDATE alunos SET nome = ? WHERE id = ?");
-    $up->execute([$_POST['nome'], $id]);
-
-    // Atualiza Cursos: O jeito mais fácil é deletar todos e inserir os novos
-    $del = $pdo->prepare("DELETE FROM aluno_curso WHERE aluno_id = ?");
-    $del->execute([$id]);
-
-    foreach ($_POST['cursos'] as $id_c) {
-        $ins = $pdo->prepare("INSERT INTO aluno_curso (aluno_id, curso_id) VALUES (?, ?)");
-        $ins->execute([$id, $id_c]);
+        echo "<input type='checkbox' name='lista_cursos[]' value='{$curso['id']}' $checado>";
+        echo $curso['nome'] . "<br>";
     }
-    header("Location: index.php");
-}
-?>
+    ?>    <br>
+    <button type="submit">Salvar no Banco</button>
+</form>

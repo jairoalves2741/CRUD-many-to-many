@@ -1,19 +1,24 @@
 <?php
-require '../config/database.php';
+include '../config/database.php';
 
-$nome = $_POST['nome_aluno'];
-$cursos_selecionados = $_POST['meus_cursos'] ?? []; // Se não marcar nada, vem vazio
+//Pegando os dados do formulário (POST)
+$nome_aluno = $_POST['nome_aluno'];
+$cursos_novos = $_POST['lista_cursos'] ?? []; // Se não marcar nada, vira array vazio
 
-// 1. Salva o Aluno
-$sql = $pdo->prepare("INSERT INTO alunos (nome) VALUES (?)");
-$sql->execute([$nome]);
-$id_aluno = $pdo->lastInsertId(); // Pega o ID que acabou de ser criado
+//Criar o aluno novo na tabela 'alunos'
+$sql_aluno = "INSERT INTO alunos (nome) VALUES ('$nome_aluno')";
+mysqli_query($conn, $sql_aluno);
 
-// 2. Salva as ligações na tabela intermediária
-foreach($cursos_selecionados as $id_curso) {
-    $sql_link = $pdo->prepare("INSERT INTO aluno_curso (aluno_id, curso_id) VALUES (?, ?)");
-    $sql_link->execute([$id_aluno, $id_curso]);
+// 4. PASSO 2: Pegar o ID que o banco acabou de gerar para esse aluno
+$id_gerado = mysqli_insert_id($conn);
+
+// 5. PASSO 3: Cadastrar os cursos marcados para esse novo ID
+foreach ($cursos_novos as $id_curso) {
+    $sql_relacao = "INSERT INTO aluno_curso (aluno_id, curso_id) VALUES ($id_gerado, $id_curso)";
+    mysqli_query($conn, $sql_relacao);
 }
 
-// Volta para a página inicial
+// 6. Voltar para a página inicial
 header("Location: ../index.php");
+exit();
+?>
