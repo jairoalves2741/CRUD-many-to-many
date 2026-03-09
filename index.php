@@ -50,18 +50,13 @@ require 'config/database.php';
 $query_cursos = mysqli_query($conn, "SELECT * FROM cursos");
 
 
-
-
-
-
-
 //Pega alunos e seus cursos, o GROUP_CONCAT Junta os nomes dos cursos em um texto só
-//e se parelos por virgulas
+//e separa por virgulas
 
 $sql = "SELECT alunos.id, alunos.nome, GROUP_CONCAT(cursos.nome SEPARATOR ', ') as nomes_cursos
         FROM alunos
-        INNER JOIN aluno_curso ON alunos.id = aluno_curso.aluno_id
-        INNER JOIN cursos ON aluno_curso.curso_id = cursos.id
+        LEFT JOIN aluno_curso ON alunos.id = aluno_curso.aluno_id        
+        LEFT JOIN cursos ON aluno_curso.curso_id = cursos.id
         GROUP BY alunos.id";
 $lista = mysqli_query($conn, $sql);
 ?>
