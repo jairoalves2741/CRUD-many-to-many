@@ -6,13 +6,22 @@ include '../config/database.php';
 //informando qual é o ID do aluno por meio da funçaõ $listar (index.php linha 89 )
 $id = $_GET['id'];
 
-//a função roda sequencialmente 
-mysqli_query($conn, "DELETE FROM aluno_curso WHERE aluno_id = $id");
+//As duas funções rodam sequencialmente, preferi primeiro excluir as foreing key as chaves dependentes
+//para depois excluir as colunas,mas deixei dentro de um try catch 
+// para previnir do aluno ficar orfão dentro do BD, sem curso. 
+try {
+    mysqli_query($conn, "DELETE FROM aluno_curso WHERE aluno_id = $id");
 
-// 4. PASSO 2: Agora sim, apaga o aluno da tabela principal
-mysqli_query($conn, "DELETE FROM alunos WHERE id = $id");
+    mysqli_query($conn, "DELETE FROM alunos WHERE id = $id");
 
-// 5. Redireciona de volta para a lista
+    mysqli_commit($conn);
+} catch (Exception $e) {
+    // Se algo deu errado, desfaz a operação e mostra o erro na variavel .
+    // E ISSO é chamado de rollback "voltar atrás"
+    mysqli_rollback($conn);
+    echo "Erro ao deletar: " . $e->getMessage();
+}
+
+//Redireciona de volta para a lista na pgina inicial e o exit finaliza o script
 header("Location: ../index.php");
 exit();
-?>

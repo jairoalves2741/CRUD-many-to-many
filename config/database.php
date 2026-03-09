@@ -1,7 +1,7 @@
 <?php
 $host = "localhost"; //servidor web
 $user = "root"; //nome  de usuario
-$pass = "123"; //password vazia 
+$pass = ""; //password vazia 
 $db = "escola"; //Nome do Banco
 
 //Conexão a tabela SQL 

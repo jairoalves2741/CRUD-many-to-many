@@ -1,23 +1,9 @@
 <?php
-// 1. Conecta ao banco usando o arquivo que criamos
-require 'config/database.php';
-
-// 2. Pega todos os cursos (Usando mysqli_query em vez de PDO)
-$query_cursos = mysqli_query($conn, "SELECT * FROM cursos");
-
-
-
-//LINHA DE CODIGO PARA O BANCO DE DADOS
-
-
-
-/*  CREATE DATABASE IF NOT EXISTS escola;
+/*  CREATE DATABASE  escola;
 
 USE escola;
 
-
-
-CREATE TABLE IF NOT EXISTS alunos (
+CREATE TABLE  alunos (
 
     id INT AUTO_INCREMENT PRIMARY KEY,
 
@@ -25,9 +11,7 @@ CREATE TABLE IF NOT EXISTS alunos (
 
 );
 
-
-
-CREATE TABLE IF NOT EXISTS cursos (
+CREATE TABLE  cursos (
 
     id INT AUTO_INCREMENT PRIMARY KEY,
 
@@ -35,9 +19,7 @@ CREATE TABLE IF NOT EXISTS cursos (
 
 );
 
-
-
-CREATE TABLE IF NOT EXISTS aluno_curso (
+CREATE TABLE  aluno_curso (
 
     aluno_id INT,
 
@@ -48,8 +30,6 @@ CREATE TABLE IF NOT EXISTS aluno_curso (
     FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
 
 );
-
-
 
 INSERT INTO cursos (nome) VALUES
 
@@ -62,6 +42,16 @@ INSERT INTO cursos (nome) VALUES
 ('JavaScript Moderno'),
 
 ('Lógica de Programação'); */
+
+// 1. Conecta ao banco usando o arquivo que criamos
+require 'config/database.php';
+
+// 2. Pega todos os cursos (Usando mysqli_query em vez de PDO)
+$query_cursos = mysqli_query($conn, "SELECT * FROM cursos");
+
+
+
+
 
 
 
